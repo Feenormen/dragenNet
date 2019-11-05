@@ -1,5 +1,5 @@
 {
-  "name": "dragenNet",
+  "name": "dragon-net",
   "version": "1.0.0",
   "description": "My supreme Nuxt.js project",
   "author": "李尧",
@@ -19,17 +19,17 @@
     "express": "^4.16.4",
     "element-ui": "^2.4.11",
     "@nuxtjs/axios": "^5.3.6",
-    "postcss-px2rem": "^0.3.0"
-  },
-  "devDependencies": {
-    "nodemon": "^1.18.9",
+    "postcss-px2rem": "^0.3.0",
     "@nuxtjs/eslint-config": "^1.0.1",
     "@nuxtjs/eslint-module": "^1.0.0",
     "babel-eslint": "^10.0.1",
-    "eslint": "^6.1.0",
-    "eslint-plugin-nuxt": ">=0.4.2",
+    "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.1.0",
-    "eslint-plugin-prettier": "^3.0.1",
+    "eslint-plugin-nuxt": ">=0.4.2",
+    "eslint-plugin-prettier": "^3.0.1"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.9",
     "prettier": "^1.16.4"
   }
 }

@@ -1,6 +1,11 @@
 <template>
   <div class="warp">
-    19809802345235234 s
+    <div class="add-box">
+      <div class="add-line">
+        <label class="add-name">地图：</label>
+        <select class="map-select"></select>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -10,6 +15,10 @@ export default {}
 
 <style scoped>
 .warp {
-  font-size: 30px;
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  position: relative;
 }
 </style>

@@ -13,7 +13,7 @@ async function start() {
 
   // const { host, port } = nuxt.options.server
   const host = '0.0.0.0'
-  const port = 3000
+  const port = 3103
 
   // Build only in dev mode
   if (config.dev) {

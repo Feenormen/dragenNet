@@ -22,7 +22,15 @@
         告诉我让我侃侃到底应该先刷哪些！
       </div>
     </div>
-    <div v-if="nest.length > 0" class="show-repeat-box">
+    <div class="flash-data" @click="getList">更新同步数据</div>
+    <div
+      v-if="nest.length > 0"
+      v-loading="loadingNest"
+      element-loading-text="给个菊花你侃侃"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      class="show-repeat-box"
+    >
       <h1>巢穴统计：</h1>
       <ol v-if="nest.length > 0">
         <li v-for="(n, index) in nest" :key="index">
@@ -35,7 +43,14 @@
         </li>
       </ol>
     </div>
-    <div v-if="users.length > 0" class="show-repeat-box">
+    <div
+      v-if="users.length > 0"
+      v-loading="loadingUser"
+      element-loading-text="给个菊花你侃侃"
+      element-loading-spinner="el-icon-loading"
+      element-loading-background="rgba(0, 0, 0, 0.8)"
+      class="show-repeat-box"
+    >
       <h1>傻叼统计：</h1>
       <ol v-if="nest.length > 0">
         <li v-for="(u, index) in users" :key="index">
@@ -71,7 +86,9 @@ export default {
       sendMap: map.map[0].name,
       sendNest: map.map[0].nest[0],
       nest: [],
-      users: []
+      users: [],
+      loadingNest: false,
+      loadingUser: false
     }
   },
   mounted() {
@@ -100,24 +117,30 @@ export default {
       this.getNest()
     },
     getUser() {
+      this.loadingUser = true
       this.$axios
         .get(`/api/user`)
         .then((res) => {
           console.log(res.data.data)
+          this.loadingUser = false
           this.users = res.data.data
         })
         .catch((err) => {
+          this.loadingUser = false
           console.log(err)
         })
     },
     getNest() {
+      this.loadingNest = true
       this.$axios
         .get(`/api/nest`)
         .then((res) => {
+          this.loadingNest = false
           // console.log(res.data.data)
           this.nest = res.data.data
         })
         .catch((err) => {
+          this.loadingNest = false
           console.log(err)
         })
     },
@@ -187,8 +210,12 @@ export default {
   border-radius: 10px;
   margin: 0 auto;
 }
+.flash-data {
+  margin: 10px 0;
+  color: dodgerblue;
+}
 .show-repeat-box {
-  margin: 30px 0 0;
+  margin: 10px 0 0;
 }
 .show-repeat-box h1 {
   font-size: 20px;

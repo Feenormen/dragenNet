@@ -70,9 +70,9 @@ module.exports = {
     [
       '/api',
       {
-        target: 'http://www.baidu.com',
+        target: 'http://dragon.heronight.cn',
         changeOrigin: true,
-        ogLevel: 'debug',
+        // ogLevel: 'debug',
         pathRewrite: { '^/api/': '/' }
       }
     ]

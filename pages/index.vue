@@ -11,7 +11,7 @@
         </select>
       </div>
       <div class="add-line">
-        <label class="add-name">巢穴：</label>
+        <label class="add-name">要刷的：</label>
         <select v-model="sendNest" class="map-select">
           <option v-for="(n, index) in mapUse.nest" :key="index" :value="n">
             {{ n }}
@@ -22,7 +22,12 @@
         告诉我让我侃侃到底应该先刷哪些！
       </div>
     </div>
-    <div class="flash-data" @click="getList">更新同步数据</div>
+    <div class="flash-data" @click="getList">
+      更新同步数据
+      <span v-if="parseInt(this.$route.query.who) === 1" @click="deleteInfo()"
+        >delete</span
+      >
+    </div>
     <div
       v-if="nest.length > 0"
       v-loading="loadingNest"
@@ -31,11 +36,11 @@
       element-loading-background="rgba(0, 0, 0, 0.8)"
       class="show-repeat-box"
     >
-      <h1>巢穴统计：</h1>
+      <h1>沙雕统计：</h1>
       <ol v-if="nest.length > 0">
         <li v-for="(n, index) in nest" :key="index">
           <div>
-            巢穴：<span class="red">{{ n.nest }}</span
+            沙雕：<span class="red">{{ n.nest }}</span
             >，数量：<span class="red">{{ n.num }}</span>
           </div>
           <div>地图：{{ n.map }}</div>
@@ -145,7 +150,7 @@ export default {
         })
     },
     postInfo() {
-      if (this.sendNest === `请选择巢穴` || this.sendMap === `请选择地图`) {
+      if (this.sendNest === `请选择沙雕`) {
         alert(`脑瘫？你没选对！傻叼..`)
         return
       }

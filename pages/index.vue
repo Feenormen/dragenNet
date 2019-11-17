@@ -106,8 +106,8 @@ export default {
         }
       })
     } else {
-      this.user = `路人甲乙丙丁`
-      this.userName = `路人甲乙丙丁`
+      this.user = `路人甲乙丙`
+      this.userName = `路人甲乙丙`
     }
     this.getList()
     // this.deleteInfo()

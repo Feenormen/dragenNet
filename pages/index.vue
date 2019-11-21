@@ -24,30 +24,48 @@
     </div>
     <div class="flash-data" @click="getList">
       更新同步数据
-      <span v-if="parseInt(this.$route.query.who) === 1" @click="deleteInfo()"
+      <span v-if="parseInt($route.query.who) === 1" @click="deleteInfo()"
         >delete</span
       >
     </div>
     <div
       v-if="nest.length > 0"
-      v-loading="loadingNest"
+      v-loading="loadingMap"
       element-loading-text="给个菊花你侃侃"
       element-loading-spinner="el-icon-loading"
       element-loading-background="rgba(0, 0, 0, 0.8)"
       class="show-repeat-box"
     >
       <h1>沙雕统计：</h1>
-      <ol v-if="nest.length > 0">
-        <li v-for="(n, index) in nest" :key="index">
-          <div>
-            沙雕：<span class="red">{{ n.nest }}</span
-            >，数量：<span class="red">{{ n.num }}</span>
-          </div>
+      <ol v-if="maps.length > 0">
+        <li v-for="(n, index) in maps" :key="index">
           <div>地图：{{ n.map }}</div>
-          <div>傻叼：{{ n.user.join('，') }}</div>
+          <ul v-for="(m, _index) in n.sub" :key="_index">
+            <div>本：{{ m.name }}， x{{ m.num }}</div>
+          </ul>
         </li>
       </ol>
     </div>
+    <!--    <div-->
+    <!--      v-if="nest.length > 0"-->
+    <!--      v-loading="loadingNest"-->
+    <!--      element-loading-text="给个菊花你侃侃"-->
+    <!--      element-loading-spinner="el-icon-loading"-->
+    <!--      element-loading-background="rgba(0, 0, 0, 0.8)"-->
+    <!--      class="show-repeat-box"-->
+    <!--    >-->
+    <!--      <h1>沙雕统计：</h1>-->
+    <!--      <ol v-if="nest.length > 0">-->
+    <!--        <li v-for="(n, index) in nest" :key="index">-->
+    <!--          <div>-->
+    <!--            沙雕：<span class="red">{{ n.nest }}</span-->
+    <!--            >，数量：<span class="red">{{ n.num }}</span>-->
+    <!--          </div>-->
+    <!--          <div>地图：{{ n.map }}</div>-->
+    <!--          <div>傻叼：{{ n.user.join('，') }}</div>-->
+    <!--        </li>-->
+    <!--      </ol>-->
+    <!--    </div>-->
     <div
       v-if="users.length > 0"
       v-loading="loadingUser"
@@ -58,23 +76,26 @@
     >
       <h1>傻叼统计：</h1>
       <ol v-if="nest.length > 0">
-        <li v-for="(u, index) in users" :key="index">
-          <div>傻叼：{{ u.user }}</div>
-          <div
-            v-for="(k, _index) in u.sub"
-            :key="_index"
-            class="user-commission-list"
-          >
-            {{ _index + 1 }}.{{ k.map + ' ===> ' + k.nest }}
-            <span
-              v-if="u.user === userName"
-              class="delete-btn red"
-              @click="deleteInfo(k.id)"
-              >打完</span
+        <div v-for="(u, index) in users" :key="index">
+          <li v-if="userName === u.user">
+            <div>傻叼：{{ u.user }}</div>
+            <div
+              v-for="(k, _index) in u.sub"
+              :key="_index"
+              class="user-commission-list"
             >
-          </div>
-        </li>
+              {{ _index + 1 }}.{{ k.map + ' ===> ' + k.nest }}
+              <span
+                v-if="u.user === userName"
+                class="delete-btn red"
+                @click="deleteInfo(k.id)"
+                >打完</span
+              >
+            </div>
+          </li>
+        </div>
       </ol>
+      <div v-else>还没的统计</div>
     </div>
   </div>
 </template>
@@ -87,20 +108,23 @@ export default {
       map,
       userName: ``,
       user: ``,
+      uid: ``,
       mapUse: map.map[0],
       sendMap: map.map[0].name,
       sendNest: map.map[0].nest[0],
       nest: [],
       users: [],
+      maps: [],
+      loadingMap: false,
       loadingNest: false,
       loadingUser: false
     }
   },
   mounted() {
+    this.uid = parseInt(this.$route.query.who)
     if (this.$route.query.who) {
-      this.user = parseInt(this.$route.query.who)
       map.user.forEach((u) => {
-        if (u.id === this.user) {
+        if (u.id === this.uid) {
           this.userName = u.name
           this.user = u.name
         }
@@ -120,13 +144,14 @@ export default {
     getList() {
       this.getUser()
       this.getNest()
+      this.getMap()
     },
     getUser() {
       this.loadingUser = true
       this.$axios
         .get(`/api/user`)
         .then((res) => {
-          console.log(res.data.data)
+          // console.log(res.data.data)
           this.loadingUser = false
           this.users = res.data.data
         })
@@ -141,11 +166,25 @@ export default {
         .get(`/api/nest`)
         .then((res) => {
           this.loadingNest = false
-          // console.log(res.data.data)
+          console.log(res.data.data)
           this.nest = res.data.data
         })
         .catch((err) => {
           this.loadingNest = false
+          console.log(err)
+        })
+    },
+    getMap() {
+      this.loadingMap = true
+      this.$axios
+        .get(`/api/map`)
+        .then((res) => {
+          this.loadingMap = false
+          console.log(res.data.data)
+          this.maps = res.data.data
+        })
+        .catch((err) => {
+          this.loadingMap = false
           console.log(err)
         })
     },
